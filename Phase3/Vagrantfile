@@ -3,14 +3,20 @@ require 'yaml'
 # Get the current root directory
 vagrant_root = File.dirname(__FILE__)
 
-# Get the location of our configuration file
+# Get the path to our configuration file
 defaults_config_filepath = vagrant_root + '/provider/configuration/defaults.yml'
+
+# Get the path to our containers.yaml file
+containers_filepath = vagrant_root + '/docker/containers.yml'
 
 # Start our vagrant configuration
 Vagrant.configure('2') do |config|
 
   # Read in our yaml configuration file
   properties = YAML.load(File.read(defaults_config_filepath))
+
+  # Read in our yaml container file
+  containers = YAML.load(File.read(containers_filepath))
 
   # Define and configure our provider
   config.vm.provider 'virtualbox' do |vm|
