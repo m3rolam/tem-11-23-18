@@ -1,0 +1,13 @@
+---
+- name: zookeeper
+  dir: docker/zookeeper
+- name: kafka
+  dir: docker/kafka
+- name: kafka-manager
+  dir: docker/kafka-manager
+- name: elasticsearch
+  dir: docker/elasticsearch
+- name: kibana
+  dir: docker/kibana
+- name: logstash
+  dir: docker/logstash

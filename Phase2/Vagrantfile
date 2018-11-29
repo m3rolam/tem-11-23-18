@@ -1,0 +1,36 @@
+require 'yaml'
+
+# Get the current root directory
+vagrant_root = File.dirname(__FILE__)
+
+# Get the location of our configuration file
+defaults_config_filepath = vagrant_root + '/provider/configuration/defaults.yml'
+
+# Start our vagrant configuration
+Vagrant.configure('2') do |config|
+
+  # Read in our yaml configuration file
+  properties = YAML.load(File.read(defaults_config_filepath))
+
+  # Define and configure our provider
+  config.vm.provider 'virtualbox' do |vm|
+    vm.memory = properties['vm']['memory']
+    vm.cpus = properties['vm']['cpus']
+  end
+
+  # Get our box from our configuration file
+  config.vm.box = properties['vm']['box']
+
+  # Configure our private network
+  config.vm.network 'private_network', ip: properties['vm']['network_ip']
+
+  # Setup a synced folder
+  config.vm.synced_folder ".", "/vagrant/"
+
+  # Run our ansible provisioner 
+  config.vm.provision 'ansible_local' do |ansible|
+    ansible.playbook = 'ansible/install.yml'
+    ansible.verbose = true
+  end
+  
+end
